@@ -7,6 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import onboardingRoutes from "./routes/onboarding.routes";
+import path from "path";
 
 const app = express();
 
@@ -23,11 +24,9 @@ app.use(
   );
   
 
-// Load the swagger.yaml file and cast it to a Record<string, any>
-const swaggerDocument = yaml.load(fs.readFileSync('./swagger.yaml', 'utf8')) as Record<string, any>;
-
-// Serve swagger docs on /api-docs
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  const swaggerPath = path.join(__dirname, "..", "swagger.yaml");
+  const swaggerDocument = yaml.load(fs.readFileSync(swaggerPath, "utf8")) as Record<string, any>;
+  
 
 
 // Set up routes
