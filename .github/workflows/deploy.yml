@@ -10,18 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-south-1
-      # Now using a secret for the ECR repository URI
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Log in to AWS ECR. This action automatically uses AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY if set as secrets.
+      # Log in to AWS ECR. The action automatically picks up AWS credentials from environment variables.
       - name: Login to AWS ECR
         id: ecr_login
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          region: ${{ env.AWS_REGION }}
+          registry-type: private
 
       # Build the Docker image
       - name: Build Docker Image
