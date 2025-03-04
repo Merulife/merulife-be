@@ -22,7 +22,7 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { companionId } = req.params;
         // Expecting message, sender, and userId to be in the body.
         const { message, sender, userId } = req.body;
-        // console.log("sendMessage: userId =", userId);
+        console.log("sendMessage: userId =", userId);
         if (!message || !sender || !userId) {
             return res.status(400).json({ error: "Message, sender, and userId are required." });
         }
@@ -42,7 +42,7 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                     companion: companionId,
                 },
             });
-            console.log('ct\read');
+            // console.log('ct\read');
         }
         // Create the chat message.
         const chatMessage = yield prisma.chatMessage.create({
