@@ -1,0 +1,35 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Conversation {
+  id         Int           @id @default(autoincrement())
+  userId     String        // Auth0 user id (e.g. from JWT “sub”)
+  companion  String        // Unique identifier for the companion
+  createdAt  DateTime      @default(now())
+  messages   ChatMessage[]
+  
+  @@unique([userId, companion])
+}
+
+model ChatMessage {
+  id             Int          @id @default(autoincrement())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+  content        String
+  sender         String       // 'user' or 'ai'
+  createdAt      DateTime     @default(now())
+}
+
+model Onboarding {
+  id        Int      @id @default(autoincrement())
+  userId    String   @unique
+  gender    String
+  age       Int
+  createdAt DateTime @default(now())
+}

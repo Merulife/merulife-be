@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: Chat API
+  version: "1.0.0"
+  description: API for managing chat conversations with AI companions.
+servers:
+  - url: http://localhost:3000
+# Global security requirement: endpoints require a Bearer token by default
+security:
+  - bearerAuth: []
+paths:
+  /api/chat/{companionId}:
+    post:
+      summary: Send a message for a specific companion.
+      description: >
+        Sends a message (from a user or AI) for the specified companion. If no conversation exists for the given user and companion,
+        a new conversation is created.
+      parameters:
+        - name: companionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier (or name) of the companion.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Hello, how are you?"
+                sender:
+                  type: string
+                  enum: [user, ai]
+                  example: user
+                userId:
+                  type: string
+                  example: "google-oauth2|108728480893592400912"
+              required:
+                - message
+                - sender
+                - userId
+      responses:
+        '201':
+          description: Chat message created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        '400':
+          description: Bad Request – missing or invalid parameters.
+        '500':
+          description: Internal Server Error.
+    get:
+      summary: Retrieve conversation messages for a specific companion.
+      description: >
+        Retrieves the chat history (messages) for the authenticated user and the specified companion.
+      parameters:
+        - name: companionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier (or name) of the companion.
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The user’s ID.
+      responses:
+        '200':
+          description: A list of chat messages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+        '404':
+          description: Conversation not found.
+        '500':
+          description: Internal Server Error.
+  /api/chat/allChat:
+    get:
+      summary: Retrieve all conversations.
+      description: >
+        Retrieves the entire chat database: all conversations with their messages.
+      # Override global security requirement: no authorization needed for this endpoint.
+      security: []
+      responses:
+        '200':
+          description: A list of all conversations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Conversation'
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        conversationId:
+          type: integer
+          example: 1
+        content:
+          type: string
+          example: "Hello, world!"
+        sender:
+          type: string
+          enum: [user, ai]
+          example: user
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-08-01T12:34:56.789Z"
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        userId:
+          type: string
+          example: "google-oauth2|108728480893592400912"
+        companion:
+          type: string
+          example: "2"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-08-01T12:00:00.000Z"
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
