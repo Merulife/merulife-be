@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - development  # Change this to your deployment branch if necessary
+      - Development  # Change this to your deployment branch if necessary
 
 jobs:
   build_and_push:
