@@ -14,7 +14,7 @@ export const sendMessage = async (req: Request, res: Response) => {
       const { companionId } = req.params;
       // Expecting message, sender, and userId to be in the body.
       const { message, sender, userId } = req.body;
-      // console.log("sendMessage: userId =", userId);
+      console.log("sendMessage: userId =", userId);
   
       if (!message || !sender || !userId) {
         return res.status(400).json({ error: "Message, sender, and userId are required." });
