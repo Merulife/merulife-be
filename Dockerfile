@@ -1,5 +1,5 @@
 #Use an official Node.js runtime as a base image with Node.js 18.x
-FROM node:18-alpine
+FROM node:18-alpine3.20
 
 #create and set the working drectory in the container
 WORKDIR /app
@@ -7,7 +7,7 @@ WORKDIR /app
 #copy package.json and package-lock.json(if available
 COPY package*.json ./
 
-# COPY .env ./
+COPY .env ./
 
 # Initialize dependencies
 RUN npm install
