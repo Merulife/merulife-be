@@ -19,7 +19,8 @@ app.use(
         "http://localhost:5173",
         "https://ac59-2405-201-c04a-9044-591d-a99a-d898-a0a3.ngrok-free.app",
         "https://chat-and-call-components-updated.d20z2klsr2pc69.amplifyapp.com",
-        "https://dev-buddy.merulife.ai"      ],
+        "https://dev-buddy.merulife.ai"     
+         ],
       credentials: true,
     })
   );
