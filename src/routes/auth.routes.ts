@@ -15,7 +15,7 @@ const checkJwt = expressjwt({
     jwksUri: `https://${AUTH0_DOMAIN}/.well-known/jwks.json`,
   }) as any,
   audience: AUTH0_AUDIENCE,
-  issuer: 'https://merulifedev.us.auth0.com/',
+  issuer: 'https://dev-yq4c5b0jjcjlsbog.us.auth0.com/',
   algorithms: ["RS256"],
 });
 
