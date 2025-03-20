@@ -8,6 +8,7 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import onboardingRoutes from "./routes/onboarding.routes";
 import path from "path";
+import tokenRoutes from "./routes/token.routes";
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(
 // Set up routes
 app.use("/api", authRoutes);
 app.use("/api/chat", chatRoutes);
-app.use("/api/onboarding", onboardingRoutes)
+app.use("/api/onboarding", onboardingRoutes);
+app.use("/api", tokenRoutes); // Register the token route under "/api"
 
 export default app;
