@@ -21,7 +21,8 @@
     "jwks-rsa": "^3.0.1",
     "livekit-server-sdk": "^2.10.2",
     "localtunnel": "^2.0.2",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
