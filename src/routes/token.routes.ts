@@ -1,11 +1,14 @@
 import { Router, Request, Response } from "express";
 import { AccessToken } from "livekit-server-sdk";
+import { v4 as uuidv4 } from "uuid";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env" });
 
 const router = Router();
 
 const createToken = async (): Promise<string> => {
-  // If this room doesn't exist, it'll be automatically created when the first participant joins
-  const roomName = "quickstart-room";
+  // Generate a unique room name every time
+  const roomName = "room-" + uuidv4().substring(0, 8);
   // Identifier to be used for the participant.
   const participantName = "quickstart-username";
 
@@ -29,7 +32,7 @@ const createToken = async (): Promise<string> => {
 router.get("/getToken", async (req: Request, res: Response) => {
   try {
     const token = await createToken();
-    res.json({token});
+    res.json({ token });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
