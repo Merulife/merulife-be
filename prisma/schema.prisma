@@ -1,3 +1,5 @@
+// schema.prisma
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -7,13 +9,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum MessageType {
+  CHAT
+  VOICE
+}
+
 model Conversation {
   id         Int           @id @default(autoincrement())
   userId     String        // Auth0 user id (e.g. from JWT “sub”)
   companion  String        // Unique identifier for the companion
   createdAt  DateTime      @default(now())
   messages   ChatMessage[]
-  
+
   @@unique([userId, companion])
 }
 
@@ -23,6 +30,8 @@ model ChatMessage {
   conversationId Int
   content        String
   sender         String       // 'user' or 'ai'
+  // New field to store the message type:
+  type           MessageType  @default(CHAT)
   createdAt      DateTime     @default(now())
 }
 
